@@ -24,6 +24,15 @@ async function rollDice() {
   return Math.floor(Math.random() * 6) + 1;  
 };
 
+async function sortearItem(player1, player2) {
+    const chance = Math.random();
+    if (chance < 0.3) { // 30% de chance de item aparecer
+        const sorteado = Math.random() < 0.5 ? player1 : player2;
+        sorteado.TEM_ITEM = "BANANA";
+        console.log(`🍌 ${sorteado.NOME} foi acertado por uma banana! Não poderá pontuar nesta rodada.`);
+    }
+}
+
 async function getRandomBlock() {
     let random = Math.random();
     let result;
@@ -63,6 +72,7 @@ async function playRaceEngine(character1, character2){
         let totalTestSkill2 = 0
 
         if(block === "RETA") {
+            sortearItem(character1, character2);
             totalTestSkill1 = diceResult1 + character1.VELOCIDADE;
             totalTestSkill2 = diceResult2 + character2.VELOCIDADE;
 
@@ -100,11 +110,19 @@ async function playRaceEngine(character1, character2){
 
         // verificando o vencendor
         if (totalTestSkill1 > totalTestSkill2) {
-            console.log(`${character1.NOME} marcou um ponto!`)
-            character1.PONTOS++;
+            if (character1.TEM_ITEM === "BANANA") {
+                console.log(`${character1.NOME} teria marcado ponto, mas escorregou na casca de banana! 🍌`);
+            } else {
+                console.log(`${character1.NOME} marcou um ponto!`);
+                character1.PONTOS++;
+            }
         } else if (totalTestSkill2 > totalTestSkill1) {
-            console.log(`${character2.NOME} marcou um ponto!`)
-            character2.PONTOS++;
+            if (character2.TEM_ITEM === "BANANA") {
+                console.log(`${character2.NOME} teria marcado ponto, mas escorregou na casca de banana! 🍌`);
+            } else {
+                console.log(`${character2.NOME} marcou um ponto!`);
+                character2.PONTOS++;
+            }
         }
         console.log("--------------------------------------------------");
     }
@@ -135,8 +153,8 @@ async function declareWinner(character1, character2) {
     let escolha1 = await ask("Digite o número do primeiro personagem: ");
     let escolha2 = await ask("Digite o número do segundo personagem (diferente do primeiro): ");
 
-    const player1 = { ...jogadores[Number(escolha1) - 1], PONTOS: 0 };
-    const player2 = { ...jogadores[Number(escolha2) - 1], PONTOS: 0 };
+    const player1 = { ...jogadores[Number(escolha1) - 1], PONTOS: 0, TEM_ITEM: null };
+    const player2 = { ...jogadores[Number(escolha2) - 1], PONTOS: 0, TEM_ITEM: null };
 
     console.log(
         `🏁🚨 Corrida entre ${player1.NOME} e ${player2.NOME} começando...\n`
