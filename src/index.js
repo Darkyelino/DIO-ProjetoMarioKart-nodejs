@@ -1,18 +1,24 @@
-const player1 = {
-    NOME: "Mario",
-    VELOCIDADE: 4,
-    MANOBRABILIDADE: 3,
-    PODER: 3,
-    PONTOS: 0
-};
+const readline = require('readline');
+function ask(question) {
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+    });
 
-const player2 = {
-    NOME: "Luigi",
-    VELOCIDADE: 3,
-    MANOBRABILIDADE: 4,
-    PODER: 4,
-    PONTOS: 0
-};
+    return new Promise(resolve => rl.question(question, answer => {
+        rl.close();
+        resolve(answer);
+    }));
+}
+
+const jogadores = [
+    {NOME: "Mario", VELOCIDADE: 4, MANOBRABILIDADE: 3, PODER: 3, PONTOS: 0},
+    {NOME: "Luigi", VELOCIDADE: 3, MANOBRABILIDADE: 4, PODER: 4, PONTOS: 0},
+    {NOME: "Peach", VELOCIDADE: 3, MANOBRABILIDADE: 4, PODER: 2, PONTOS: 0},
+    {NOME: "Yoshi", VELOCIDADE: 2, MANOBRABILIDADE: 4, PODER: 3, PONTOS: 0},
+    {NOME: "Bowser", VELOCIDADE: 3, MANOBRABILIDADE: 2, PODER: 5, PONTOS: 0},
+    {NOME: "Donkey Kong", VELOCIDADE: 2, MANOBRABILIDADE: 2, PODER: 5, PONTOS: 0},
+];
 
 async function rollDice() {
   return Math.floor(Math.random() * 6) + 1;  
@@ -119,6 +125,19 @@ async function declareWinner(character1, character2) {
 };
 
 (async function main(){
+    // Exibe os personagens disponíveis
+    console.log("Escolha um personagem:");
+    jogadores.forEach((jogador, index) => {
+        console.log(`${index + 1}. ${jogador.NOME} (VEL: ${jogador.VELOCIDADE}, MAN: ${jogador.MANOBRABILIDADE}, POD: ${jogador.PODER})`);
+    });
+
+    // Escolha de personagens
+    let escolha1 = await ask("Digite o número do primeiro personagem: ");
+    let escolha2 = await ask("Digite o número do segundo personagem (diferente do primeiro): ");
+
+    const player1 = { ...jogadores[Number(escolha1) - 1], PONTOS: 0 };
+    const player2 = { ...jogadores[Number(escolha2) - 1], PONTOS: 0 };
+
     console.log(
         `🏁🚨 Corrida entre ${player1.NOME} e ${player2.NOME} começando...\n`
     );
