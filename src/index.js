@@ -27,7 +27,7 @@ async function rollDice() {
 async function sortearItem(player1, player2) {
     const chance = Math.random();
     if (chance < 0.3) { // 30% de chance de item aparecer
-        const sorteado = Math.random() < 0.5 ? player1 : player2;
+        const sorteado = Math.random() < 0.6 ? player1 : player2;
         sorteado.TEM_ITEM = "BANANA";
         console.log(`🍌 ${sorteado.NOME} foi acertado por uma banana! Não poderá pontuar nesta rodada.`);
     }
@@ -57,6 +57,8 @@ async function  logRollResult(characterName, block, diceResult, attribute) {
 
 async function playRaceEngine(character1, character2){
     for (let round = 1; round <= 5; round++) {
+        character1.TEM_ITEM = null;
+        character2.TEM_ITEM = null;
         console.log(`🏁 Rodada ${round}`);
 
         // sorteia o bloco
