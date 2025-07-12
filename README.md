@@ -49,7 +49,7 @@
                 <img src="./docs/bowser.gif" alt="Mario Kart" width="60" height="60">
             </td>
             <td style="border: 1px solid black; text-align: center;">
-                <p>Velocidade: 5</p>
+                <p>Velocidade: 3</p>
                 <p>Manobrabilidade: 2</p>
                 <p>Poder: 5</p>
             </td>
